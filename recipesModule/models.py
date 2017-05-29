@@ -29,14 +29,15 @@ class Direction(models.Model):
 
 class Recipe(models.Model):
 	name = models.CharField(max_length=200, blank=False, null=False)
+	short_description = models.CharField(max_length=200, blank=False, null=False)
 	category =  models.CharField(max_length=100, blank=False, null=False)
 	country =  models.CharField(max_length=100, blank=False, null=False)
 	preparation_time = models.IntegerField()
 	cook_time = models.IntegerField()
 	#ingredients = models.ForeignKey(Ingredient)
-	directions = models.OneToOneField(Direction)
+	#directions = models.OneToOneField(Direction)
 	ingredients = models.TextField()
-	#directions = models.TextField()
+	directions = models.TextField()
 	photo = models.ImageField() #CUSTOM Pide instalar Pillow
 	creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
 

@@ -127,5 +127,5 @@ STATICFILES_DIRS = [
 ]
 
 #CUSTOM GLOBAL IMAGE FOLDER PATH Image Upload
-MEDIA_URL = '/img/' 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'img')
+MEDIA_URL = 'static/img/' 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
