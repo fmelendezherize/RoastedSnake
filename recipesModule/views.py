@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from .addRecipesForm import AddRecipe
 from models import Recipe
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
 
 # Create your views here.
 def inicio(request):
@@ -22,5 +25,15 @@ def recipes(request):
 def contact(request):
 	return render(request, "contact.html")
 
-def login(request):
-	return render(request, "login.html")
+def login_user(request):
+	logout(request)
+	username = password = ''
+	if request.POST:
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				inicio_plantilla(request)
+	return render(request, 'login.html')

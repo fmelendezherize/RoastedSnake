@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^$', views.inicio_plantilla),
     url(r'^recipes/$', views.recipes),
     url(r'^contact/$', views.contact),
-    url(r'^login/$', views.login)
+    url(r'^login/$', views.login_user)
 ]
