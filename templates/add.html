@@ -32,66 +32,74 @@
                 <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
                 <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
                 <!-- NOTE: To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
-                <form name="sentMessage" id="contactForm" novalidate>
+                {% block main %}
+                <form name="sentMessage" action="/add/" method="POST" novalidate>
+                    {% csrf_token %}
+                    {% if next %}
+                        <input type="hidden" name="next" value="/" />
+                    {% endif %}
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Name</label>
-                            <input type="text" class="form-control" placeholder="name" id="name" required data-validation-required-message="Please enter recipe name.">
+                            <input type="text" class="form-control" placeholder="name" name="name" required data-validation-required-message="Please enter recipe name.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Short Description</label>
+                            <input type="text" class="form-control" placeholder="Short Description" name="short_description" required data-valnameation-required-message="Please enter category name.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Category</label>
-                            <input type="text" class="form-control" placeholder="category" id="category" required data-validation-required-message="Please enter category name.">
+                            <input type="text" class="form-control" placeholder="category" name="category" required data-valnameation-required-message="Please enter category name.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Preparation time</label>
-                            <input type="text" class="form-control" placeholder="preparation time" id="prep" required data-validation-required-message="Please enter prep time.">
+                            <input type="text" class="form-control" placeholder="preparation time" name="preparation_time" required data-valnameation-required-message="Please enter prep time.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Country</label>
-                            <input type="text" class="form-control" placeholder="country" id="country" required data-validation-required-message="Please enter country.">
+                            <input type="text" class="form-control" placeholder="country" name="country" required data-valnameation-required-message="Please enter country.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>cooking time</label>
-                            <input type="text" class="form-control" placeholder="cooking time" id="cook_time" required data-validation-required-message="Please enter cook time.">
+                            <input type="text" class="form-control" placeholder="cooking time" name="cook_time" required data-valnameation-required-message="Please enter cook time.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Directions</label>
-                            <input type="text" class="form-control" placeholder="Direction" id="directions" required data-validation-required-message="Please enter directions.">
+                            <input type="text" class="form-control" placeholder="Direction" name="directions" required data-valnameation-required-message="Please enter directions.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>ingredients</label>
-                            <input type="text" class="form-control" placeholder="ingredients" id="ingredients" required data-validation-required-message="Please enter ingredients.">
+                            <input type="text" class="form-control" placeholder="ingredients" name="ingredients" required data-valnameation-required-message="Please enter ingredients.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Picture</label>
-                            <input type="file" name="pic" accept="image/*">
+                            <input type="file" name="photo" accept="image/*">
                         </div>
                     </div>
-
-
-
-
                     <br>
                     <div id="success"></div>
                     <div class="row">
@@ -100,6 +108,8 @@
                         </div>
                     </div>
                 </form>
+                {% endblock %}
+
             </div>
         </div>
     </div>

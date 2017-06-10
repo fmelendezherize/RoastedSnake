@@ -19,8 +19,10 @@ from recipesModule import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.inicio_plantilla),
+    url(r'^$', views.inicio_plantilla, name="inicio_plantilla"),
     url(r'^recipes/$', views.recipes),
     url(r'^contact/$', views.contact),
-    url(r'^login/$', views.login_user)
+    url(r'^login/$', views.login_user),
+    url(r'^add/$', views.recipes_create),
+    url(r'^recipe/$', views.recipe_get)
 ]
