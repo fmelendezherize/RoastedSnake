@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "head_base.html" %}
+
+<body>
+    <!-- Navigation -->
+{% include "menu_base.html" %}
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('{% static "img/home-bg.jpg" %}')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Edit New Recipe</h1>
+                        <hr class="small">
+                        <span class="subheading">Sign in to upload recipes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Edit a Recipe</p>
+                <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
+                <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
+                <!-- NOTE: To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
+                {% block main %}
+                <form name="sentMessage" action="/edit/" method="POST" novalidate>
+                    {% csrf_token %}
+                    {% if next %}
+                        <input type="hidden" name="next" value="/">
+                    {% endif %}
+                    <img src=../{{ query_recipe.photo.url }} class="p-img">
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Name</label>
+                            <input type="text" class="form-control" placeholder="name" name="name" required data-validation-required-message="Please enter recipe name." 
+                                   value="{{ query_recipe.name }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Short Description</label>
+                            <input type="text" class="form-control" placeholder="Short Description" name="short_description" required data-valnameation-required-message="Please enter category name."
+                            value="{{ query_recipe.short_description }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Category</label>
+                            <input type="text" class="form-control" placeholder="category" name="category" required data-valnameation-required-message="Please enter category name."
+                            value="{{ query_recipe.category }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Preparation time</label>
+                            <input type="text" class="form-control" placeholder="preparation time" name="preparation_time" required data-valnameation-required-message="Please enter prep time."
+                            value="{{ query_recipe.preparation_time }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Country</label>
+                            <input type="text" class="form-control" placeholder="country" name="country" required data-valnameation-required-message="Please enter country."
+                            value="{{ query_recipe.country }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>cooking time</label>
+                            <input type="text" class="form-control" placeholder="cooking time" name="cook_time" required data-valnameation-required-message="Please enter cook time."
+                            value="{{ query_recipe.cook_time }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Directions</label>
+                            <input type="text" class="form-control" placeholder="Direction" name="directions" required data-valnameation-required-message="Please enter directions."
+                            value="{{ query_recipe.directions }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>ingredients</label>
+                            <input type="text" class="form-control" placeholder="ingredients" name="ingredients" required data-valnameation-required-message="Please enter ingredients."
+                            value="{{ query_recipe.ingredients }}">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="row control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <label>Picture</label>
+                            <input type="file" name="photo" value="{{ query_recipe.photo.url }}">
+                        </div>
+                    </div>
+                    <br>
+                    <div id="success"></div>
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <input type="hidden" name="recipe_id" value="{{ query_recipe.id }}">
+                            <button type="submit" class="btn btn-default">Send</button>
+                        </div>
+                    </div>
+                </form>
+                {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% include "footer_base.html" %}
+
+</body>
+
+</html>

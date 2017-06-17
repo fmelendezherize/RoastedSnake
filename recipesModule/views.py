@@ -19,8 +19,13 @@ def inicio_plantilla(request):
 	context = {"query_recipes": query_recipes}
 	return render(request, "index.html", context)
 
-def recipes(request):
-	return render(request, "recipes.html")
+def my_recipes(request):
+	if request.user.is_authenticated():
+		current_user = request.user
+		print current_user
+		return render(request, "my_recipes.html")
+	else:
+		return redirect('/login')
 
 def contact(request):
 	return render(request, "contact.html")
@@ -35,8 +40,12 @@ def login_user(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				inicio_plantilla(request)
+				return redirect('/recipes')
 	return render(request, 'login.html')
+
+def logout_user(request):
+	logout(request)
+	return redirect('inicio_plantilla')
 
 def recipes_create(request):
 	if request.POST:
@@ -63,10 +72,38 @@ def recipes_delete():
 def recipe_get(request):
 	if request.POST:
 		if request.POST['action'] == "delete_recipe":
-			print "hago delete a: " + request.POST['recipe_id']
+			myid = request.POST['recipe_id']
+			Recipe.objects.get(pk=myid).delete()
 			return redirect('inicio_plantilla')
 	else:
 		recipe_id = request.GET['id']
 		query_recipe = Recipe.objects.get(pk=recipe_id)
 		context = {"query_recipe": query_recipe}
 		return render(request, "single_recipe.html", context)
+
+def recipe_update(request):
+	if request.POST:
+		myid = request.POST['recipe_id']
+		print "update" + myid
+		updateRecipe = Recipe.objects.get(pk=myid)
+		updateRecipe.name = request.POST['name']
+		updateRecipe.short_description = request.POST['short_description']
+		updateRecipe.category = request.POST['category']
+		updateRecipe.country =  request.POST['country']
+		updateRecipe.preparation_time = request.POST['preparation_time']
+		updateRecipe.cook_time = request.POST['cook_time']
+		updateRecipe.ingredients = request.POST['ingredients']
+		updateRecipe.directions = request.POST['directions']
+		if len(request.POST['photo']) != 0:
+			updateRecipe.photo = request.POST['photo'] 
+		updateRecipe.save()
+		return redirect('/recipe?id=' + myid)
+
+	else:
+		print "get update"
+		recipe_id = request.GET['id']
+		query_recipe = Recipe.objects.get(pk=recipe_id)
+		print query_recipe.photo
+		context = {"query_recipe": query_recipe}
+		return render(request, "edit.html", context)
+	
