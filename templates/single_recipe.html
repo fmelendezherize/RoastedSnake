@@ -17,7 +17,7 @@
                     <div class="post-heading">
                         <h1>{{ query_recipe.name  }}</h1>
                         <h2 class="subheading">{{ query_recipe.short_description }}</h2>
-                        <span class="meta">Posted by <a href="#">Start Bootstrap</a> on {{ query_recipe.creation_date }}</span>
+                        <span class="meta">Posted by <a href="#">{{ query_recipe.author.first_name }} {{ query_recipe.author.last_name }}</a> on {{ query_recipe.creation_date }}</span>
                     </div>
                 </div>
             </div>

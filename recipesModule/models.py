@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
@@ -40,6 +40,7 @@ class Recipe(models.Model):
 	directions = models.TextField()
 	photo = models.ImageField() #CUSTOM Pide instalar Pillow
 	creation_date = models.DateTimeField(auto_now_add=True, auto_now=False)
+	author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
 	def __unicode__(self):
 		return self.name #CUSTOM El objeto retorna por defecto el Nombre de la receta al ser llamado por funciones

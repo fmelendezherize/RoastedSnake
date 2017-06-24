@@ -45,7 +45,7 @@
                             {{ recipe.short_description  }}
                         </h3>
                     </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on {{ recipe.creation_date }}</p>
+                    <p class="post-meta">Posted by <a href="/author?name={{ recipe.author }}">{{ recipe.author.first_name }} {{ recipe.author.last_name }}</a> on {{ recipe.creation_date }}</p>
                 </div>
               </div>
           </div>

@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^add/$', views.recipes_create),
     url(r'^recipe/$', views.recipe_get),
     url(r'^edit/$', views.recipe_update),
+    url(r'^author/$', views.recipes_byauthor),
 ]

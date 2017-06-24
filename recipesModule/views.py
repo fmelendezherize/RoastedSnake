@@ -6,7 +6,7 @@ from .addRecipesForm import AddRecipe
 from models import Recipe
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 def inicio(request):
@@ -21,11 +21,19 @@ def inicio_plantilla(request):
 
 def my_recipes(request):
 	if request.user.is_authenticated():
-		current_user = request.user
-		print current_user
-		return render(request, "my_recipes.html")
+		query_recipes = Recipe.objects.filter(author=request.user)
+		print len(query_recipes)
+		context = {"query_recipes": query_recipes}
+		return render(request, "my_recipes.html", context)
 	else:
 		return redirect('/login')
+
+def recipes_byauthor(request):
+	author = request.GET['name']
+	query_author = User.objects.filter(username=author)
+	query_recipes = Recipe.objects.filter(author=query_author)
+	context = {"query_recipes": query_recipes}
+	return render(request, "author.html", context)
 
 def contact(request):
 	return render(request, "contact.html")
@@ -48,20 +56,25 @@ def logout_user(request):
 	return redirect('inicio_plantilla')
 
 def recipes_create(request):
-	if request.POST:
-		newRecipe = Recipe()
-		newRecipe.name = request.POST['name']
-		newRecipe.short_description = request.POST['short_description']
-		newRecipe.category = request.POST['category']
-		newRecipe.country =  request.POST['country']
-		newRecipe.preparation_time = request.POST['preparation_time']
-		newRecipe.cook_time = request.POST['cook_time']
-		newRecipe.ingredients = request.POST['ingredients']
-		newRecipe.directions = request.POST['directions']
-		newRecipe.photo = request.POST['photo']
-		newRecipe.save()
-		inicio_plantilla(request)
-	return render(request, "add.html")
+	if request.user.is_authenticated():
+		if request.POST:
+			newRecipe = Recipe()
+			newRecipe.name = request.POST['name']
+			newRecipe.short_description = request.POST['short_description']
+			newRecipe.category = request.POST['category']
+			newRecipe.country =  request.POST['country']
+			newRecipe.preparation_time = request.POST['preparation_time']
+			newRecipe.cook_time = request.POST['cook_time']
+			newRecipe.ingredients = request.POST['ingredients']
+			newRecipe.directions = request.POST['directions']
+			newRecipe.photo = request.POST['photo']
+			newRecipe.author = request.user
+			newRecipe.save()
+			return redirect('inicio_plantilla')
+		else:
+			return render(request, "add.html")
+	else:
+		return redirect('/login')
 
 def recipes_update():
 	print "hola"
@@ -73,7 +86,10 @@ def recipe_get(request):
 	if request.POST:
 		if request.POST['action'] == "delete_recipe":
 			myid = request.POST['recipe_id']
-			Recipe.objects.get(pk=myid).delete()
+			query_recipe = Recipe.objects.get(pk=myid)
+			if request.user != query_recipe.author:
+				return redirect('/recipe?id=' + myid)
+			query_recipe.delete()
 			return redirect('inicio_plantilla')
 	else:
 		recipe_id = request.GET['id']
@@ -84,8 +100,12 @@ def recipe_get(request):
 def recipe_update(request):
 	if request.POST:
 		myid = request.POST['recipe_id']
-		print "update" + myid
 		updateRecipe = Recipe.objects.get(pk=myid)
+
+		if request.user != updateRecipe.author:
+			return redirect('/recipe?id=' + myid)
+
+		print "update" + myid
 		updateRecipe.name = request.POST['name']
 		updateRecipe.short_description = request.POST['short_description']
 		updateRecipe.category = request.POST['category']
@@ -94,8 +114,10 @@ def recipe_update(request):
 		updateRecipe.cook_time = request.POST['cook_time']
 		updateRecipe.ingredients = request.POST['ingredients']
 		updateRecipe.directions = request.POST['directions']
-		if len(request.POST['photo']) != 0:
-			updateRecipe.photo = request.POST['photo'] 
+
+		if "photo" in request.FILES:
+			updateRecipe.photo = request.FILES['photo']
+
 		updateRecipe.save()
 		return redirect('/recipe?id=' + myid)
 
@@ -103,6 +125,10 @@ def recipe_update(request):
 		print "get update"
 		recipe_id = request.GET['id']
 		query_recipe = Recipe.objects.get(pk=recipe_id)
+
+		if request.user != query_recipe.author:
+			return redirect('/recipe?id=' + recipe_id)
+
 		print query_recipe.photo
 		context = {"query_recipe": query_recipe}
 		return render(request, "edit.html", context)
