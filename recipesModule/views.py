@@ -67,7 +67,10 @@ def recipes_create(request):
 			newRecipe.cook_time = request.POST['cook_time']
 			newRecipe.ingredients = request.POST['ingredients']
 			newRecipe.directions = request.POST['directions']
-			newRecipe.photo = request.POST['photo']
+			
+			if "photo" in request.FILES:
+				newRecipe.photo = request.FILES['photo']
+			
 			newRecipe.author = request.user
 			newRecipe.save()
 			return redirect('inicio_plantilla')
@@ -114,21 +117,18 @@ def recipe_update(request):
 		updateRecipe.cook_time = request.POST['cook_time']
 		updateRecipe.ingredients = request.POST['ingredients']
 		updateRecipe.directions = request.POST['directions']
-
+		
 		if "photo" in request.FILES:
 			updateRecipe.photo = request.FILES['photo']
-
+		
 		updateRecipe.save()
 		return redirect('/recipe?id=' + myid)
-
 	else:
 		print "get update"
 		recipe_id = request.GET['id']
 		query_recipe = Recipe.objects.get(pk=recipe_id)
-
 		if request.user != query_recipe.author:
 			return redirect('/recipe?id=' + recipe_id)
-
 		print query_recipe.photo
 		context = {"query_recipe": query_recipe}
 		return render(request, "edit.html", context)
